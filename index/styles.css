@@ -1,0 +1,11 @@
+.sidebar {
+    height: 100vh;
+    background-color: #343a40; /* Azul oscuro */
+    color: white;
+}
+.sidebar .nav-item {
+    padding: 15px 20px;
+}
+.sidebar .nav-item:hover {
+    background-color: #495057; /* Un tono más claro al pasar el mouse */
+}
