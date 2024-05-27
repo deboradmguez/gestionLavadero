@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Lavadero de Autos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="sidebar-container"></div>
+    <div class="content1" id="content1">
+        <!-- El contenido dinámico inicial se cargará acá -->
+        <div class="hero">
+    <h1>Bienvenido a CarWash</h1>
+    <p>El mejor lugar para el cuidado y mantenimiento de tu vehículo.</p>
+    <button onclick="showSection('servicios')">Nuestros Servicios</button>
+</div>
+<div class="features">
+    <div class="feature">
+        <h2>Lavado Completo</h2>
+        <p>Ofrecemos un lavado completo que dejará tu auto como nuevo.</p>
+    </div>
+    <div class="feature">
+        <h2>Atención Personalizada</h2>
+        <p>Nuestro personal está capacitado para brindarte la mejor atención.</p>
+    </div>
+    <div class="feature">
+        <h2>Productos de Calidad</h2>
+        <p>Usamos solo productos de alta calidad para el cuidado de tu auto.</p>
+    </div>
+</div>
+
+    </div>
+    <!--Cargar el contenido de sidebar.html-->
+    <script src="script.js"></script>
+    <script>
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar-container').innerHTML = data;
+                // Cargar la sección inicial 'index'
+                showSection('index');
+            })
+    </script>
+</body>
+</html>

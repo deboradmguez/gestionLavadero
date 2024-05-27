@@ -1,0 +1,17 @@
+<!--Crea una barra lateral para la página con un menú que incluye botones como Inicio, Clientes, Vehículos, etc.
+Cada botón tiene un evento onclick que llama a la función showSection con un parámetro correspondiente,
+como 'index', 'clientes', 'vehiculos', etc. que se carga en el script.js-->
+<div class="sidebar">
+    <div class="logo">CarWash</div>
+    <div class="menu">
+        <button class="menu-button" onclick="showSection('index')">Inicio</button>
+        <button class="menu-button" onclick="showSection('clientes')">Clientes</button>
+        <button class="menu-button" onclick="showSection('vehiculos')">Vehículos</button>
+        <button class="menu-button" onclick="showSection('turnos')">Turnos</button>
+        <button class="menu-button" onclick="showSection('empleados')">Empleados</button>
+        <button class="menu-button" onclick="showSection('servicios')">Servicios</button>
+    </div>
+    <div class="logo-container">
+        <img class="logocarwash" src="logo.png" alt="CarWash Logo">
+    </div>
+</div>
