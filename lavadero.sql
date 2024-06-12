@@ -3,11 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2024 a las 01:23:21
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
-
-USE lavadero;
+-- Tiempo de generación: 13-06-2024 a las 00:51:51
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,13 +27,21 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `clientes`
 --
 
-DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `idcliennte` int(11) NOT NULL,
+  `dni` int(8) NOT NULL,
   `nombre` varchar(20) NOT NULL,
   `apellido` varchar(20) NOT NULL,
   `telefono` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`idcliennte`, `dni`, `nombre`, `apellido`, `telefono`) VALUES
+(1, 43711406, 'debo', 'dominguez', '03704034207'),
+(2, 34564783, 'cami', 'zabala', '01159674508');
 
 -- --------------------------------------------------------
 
@@ -43,7 +49,6 @@ CREATE TABLE `clientes` (
 -- Estructura de tabla para la tabla `empleados`
 --
 
-DROP TABLE IF EXISTS `empleados`;
 CREATE TABLE `empleados` (
   `dni` int(8) NOT NULL,
   `nombre` varchar(20) NOT NULL,
@@ -59,7 +64,6 @@ CREATE TABLE `empleados` (
 -- Estructura de tabla para la tabla `servicios`
 --
 
-DROP TABLE IF EXISTS `servicios`;
 CREATE TABLE `servicios` (
   `idservicio` int(11) NOT NULL,
   `servicio` text NOT NULL,
@@ -73,7 +77,6 @@ CREATE TABLE `servicios` (
 -- Estructura de tabla para la tabla `turnos`
 --
 
-DROP TABLE IF EXISTS `turnos`;
 CREATE TABLE `turnos` (
   `idturno` int(11) NOT NULL,
   `idservicio` int(11) NOT NULL,
@@ -84,10 +87,21 @@ CREATE TABLE `turnos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `idusuario` int(11) NOT NULL,
+  `nombreusuario` varchar(6) NOT NULL,
+  `contraseña` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `vehiculos`
 --
 
-DROP TABLE IF EXISTS `vehiculos`;
 CREATE TABLE `vehiculos` (
   `patente` varchar(7) NOT NULL,
   `modelo` text NOT NULL,
@@ -102,7 +116,8 @@ CREATE TABLE `vehiculos` (
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  ADD PRIMARY KEY (`idcliennte`);
+  ADD PRIMARY KEY (`idcliennte`),
+  ADD UNIQUE KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `empleados`
@@ -129,6 +144,12 @@ ALTER TABLE `turnos`
   ADD KEY `idturno` (`idturno`);
 
 --
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`idusuario`);
+
+--
 -- Indices de la tabla `vehiculos`
 --
 ALTER TABLE `vehiculos`
@@ -144,7 +165,7 @@ ALTER TABLE `vehiculos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `idcliennte` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idcliennte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
@@ -157,6 +178,12 @@ ALTER TABLE `servicios`
 --
 ALTER TABLE `turnos`
   MODIFY `idturno` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
