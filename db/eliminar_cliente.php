@@ -9,7 +9,7 @@ if (isset($_GET['dni'])) {
     $stmt->bind_param("s", $dni);
 
     if ($stmt->execute()) {
-        echo "<script>window.location.href = 'lista-clientes.php';</script>";
+        echo "<script>window.location.href = 'clientes.php';</script>";
     } else {
         echo "Error: " . $stmt->error;
     }

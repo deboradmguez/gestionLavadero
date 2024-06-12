@@ -7,6 +7,8 @@
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
+USE lavadero;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -27,6 +29,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `clientes`
 --
 
+DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `idcliennte` int(11) NOT NULL,
   `nombre` varchar(20) NOT NULL,
@@ -40,6 +43,7 @@ CREATE TABLE `clientes` (
 -- Estructura de tabla para la tabla `empleados`
 --
 
+DROP TABLE IF EXISTS `empleados`;
 CREATE TABLE `empleados` (
   `dni` int(8) NOT NULL,
   `nombre` varchar(20) NOT NULL,
@@ -55,6 +59,7 @@ CREATE TABLE `empleados` (
 -- Estructura de tabla para la tabla `servicios`
 --
 
+DROP TABLE IF EXISTS `servicios`;
 CREATE TABLE `servicios` (
   `idservicio` int(11) NOT NULL,
   `servicio` text NOT NULL,
@@ -68,6 +73,7 @@ CREATE TABLE `servicios` (
 -- Estructura de tabla para la tabla `turnos`
 --
 
+DROP TABLE IF EXISTS `turnos`;
 CREATE TABLE `turnos` (
   `idturno` int(11) NOT NULL,
   `idservicio` int(11) NOT NULL,
@@ -81,6 +87,7 @@ CREATE TABLE `turnos` (
 -- Estructura de tabla para la tabla `vehiculos`
 --
 
+DROP TABLE IF EXISTS `vehiculos`;
 CREATE TABLE `vehiculos` (
   `patente` varchar(7) NOT NULL,
   `modelo` text NOT NULL,

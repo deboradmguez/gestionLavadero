@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($insert->execute()) {
                 // Cliente registrado con éxito
-                echo "<script>window.location.href = 'lista-clientes.php';</script>";
+                echo "<script>window.location.href = '.lista-clientes.php';</script>";
             } else {
                 die('Insert failed: ' . $insert->error);
             }
