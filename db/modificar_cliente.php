@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0 && $nuevoDni != $dni) {
-            echo "<script>alert('El DNI ya está registrado.'); window.location.href = 'clientes.php.php';</script>";
+            echo "<script>alert('El DNI ya está registrado.'); window.location.href = '../clientes.php';</script>";
             exit();
         } else {
             // Modificar los datos del cliente
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sssss", $nuevoDni, $nombre, $apellido, $telefono, $dni);
 
             if ($stmt->execute()) {
-                echo "<script>window.location.href = 'clientes.php';</script>";
+                echo "<script>window.location.href = '../clientes.php';</script>";
                 exit();
             } else {
                 echo "Error: " . $stmt->error;

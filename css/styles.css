@@ -13,6 +13,32 @@
   cursor: pointer;
 }
 
+.navbar-logo{
+  display: inline-block;
+  vertical-align: middle;
+  width: 70px;
+}
+.navbar-logo img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+#contenedorLogin button {
+  background-color: #223f3f;
+  color: white;
+  font-weight: bold;
+}
+#contenedorLogin button:hover {
+background-color: #294141d8;
+}
+
+
+#pagLogin{
+  background-color: #2e4d4dbe;
+}
+
+
+
 
 :root {
   --bs-blue: #0d6efd;
