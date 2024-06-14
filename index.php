@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['idusuario'])) {
-    header("Location: login.html");
+    header("Location: index.html");
     exit();
 }
 ?><!DOCTYPE html>
@@ -22,7 +22,7 @@ if (!isset($_SESSION['idusuario'])) {
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
             <a class="navbar-logo ps-3" href="#">
-                <img src="logo-modified.png" alt="logo" ></a>
+                <img src="img\logo-modified.png" alt="logo" ></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 ps-3" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
