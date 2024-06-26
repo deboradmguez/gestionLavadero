@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sssss", $nuevoDni, $nombre, $apellido, $telefono, $dni);
 
             if ($stmt->execute()) {
-                echo "<script>window.location.href = '../clientes.php';</script>";
+                echo "<script>window.location.href = '../lista-clientes.php';</script>";
                 exit();
             } else {
                 echo "Error: " . $stmt->error;
@@ -35,13 +35,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->close();
     } else {
-        echo "<script>alert('Por favor, complete todos los campos requeridos.'); window.location.href = 'modificar_cliente.php';</script>";
+        echo "<script>alert('Por favor, complete todos los campos requeridos.'); window.location.href = '../lista-clientes.php';</script>";
         exit();
     }
 
     $conn->close();
 } else {
     // Si no es POST, redirigir al formulario o manejar adecuadamente
-    echo "<script>window.location.href = 'modificar_cliente.php';</script>";
+    echo "<script>window.location.href = '../lista-clientes.php';</script>";
     exit();
 }

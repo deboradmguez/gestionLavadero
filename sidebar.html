@@ -1,0 +1,38 @@
+<aside id="sidebar">
+    <ul class="sidebar-item p-0">
+        <li><a href="index.php" class="sidebar-link">
+                <i class="lni lni-dashboard"></i>
+                <span>Inicio</span>
+            </a>
+        </li>
+        <li><a href="lista-clientes.php" class="sidebar-link">
+                <i class="lni lni-users"></i>
+                <span>Clientes</span>
+            </a>
+        </li>
+        <li><a href="servicios.php" class="sidebar-link">
+                <i class="lni lni-cog"></i>
+                <span>Servicios</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#estadisticas" aria-expanded="false" aria-controls="auth">
+                <i class="lni lni-protection"></i>
+                <span>Estadísticas</span>
+            </a>
+            <ul id="estadisticas" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-page="estadisticas-dia.php">Día</a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link" data-page="estadisticas-mes.php">Mes</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <div class="sidebar-footer">
+        <div class="sidebar-logo ms-3">
+            <a id="nombreLavadero" href="#">ecowash</a>
+        </div>
+    </div>
+</aside>

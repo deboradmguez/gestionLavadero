@@ -1,0 +1,13 @@
+/*CLIENTES*/
+.clientes-lista {
+    overflow-y: auto;
+}
+
+.cliente-detalle {
+    margin-top: 20px;
+    display: none;
+}
+
+.clientes-lista li:hover {
+    cursor: pointer;
+}
