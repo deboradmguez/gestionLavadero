@@ -1,18 +1,3 @@
-<?php
-require_once "db\db.php";
-$sql = "SELECT * FROM clientes";
-$resultado = $conn->query($sql);
-$clientes = [];
-
-if ($resultado->num_rows > 0) {
-    while ($row = $resultado->fetch_assoc()) {
-        $clientes[] = $row;
-    }
-}
-
-// Cerrar conexión
-$conn->close();
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +32,7 @@ $conn->close();
                             <div class="col-10 ms-2">
                                 <input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar por artículo o código">
                             </div>
-                            <div class="col-2">
+                            <div class="col-2 ms-2">
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalRegistrarCliente">
                                     <i class="fa-solid fa-circle-plus"></i>
                                     Añadir nuevo
@@ -61,30 +46,27 @@ $conn->close();
                         <h4>Clientes</h4>
                     </div>
                 </div>
-                <div class="col-lg-11 col-md-6 ms-3">
-                    <ul class="list-group list-group-flush clientes-lista" id="listaClientes">
-                        <?php foreach ($clientes as $cliente) : ?>
-                            <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-dni="<?php echo $cliente['dni']; ?>">
-                                <span class="cliente-nombre">
-                                    <?php echo $cliente['nombre'] . ' ' . $cliente['apellido']; ?>
-                                </span>
-                                <div class="cliente-acciones">
-                                    <button class="btn btn-primary ms-2 btn-detalles" data-bs-toggle="modal" data-bs-target="#modalDetalleCliente">
-                                        <i class="fa-solid fa-circle-info"></i>
-                                    </button>
-                                    <button class="btn btn-secondary ms-2 btn-modificar" data-bs-toggle="modal" data-bs-target="#modalModificarCliente">
-                                        <i class="fa-solid fa-user-pen"></i>
-                                    </button>
-                                    <button class="btn btn-danger ms-2 btn-eliminar" data-bs-toggle="modal">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                <div class="container mt-5">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="tablaClientes">
+                            <thead>
+                                <tr>
+                                    <th scope="col">DNI</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Teléfono</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaClientes">
+                                <!-- Aquí se llenarán los clientes desde JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Modal para mostrar detalles del cliente -->
+
+                <!-- Modal para detalles del cliente -->
                 <div class="modal fade" id="modalDetalleCliente" tabindex="-1" aria-labelledby="modalDetalleClienteLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -101,6 +83,40 @@ $conn->close();
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal para modificar cliente -->
+                <div class="modal fade" id="modalModificarCliente" tabindex="-1" aria-labelledby="modalModificarClienteLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalModificarClienteLabel">Modificar Cliente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formModificarCliente">
+                                    <div class="mb-3">
+                                        <label for="modificarDni" class="form-label">DNI</label>
+                                        <input type="text" class="form-control" id="modificarDni" name="dni" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modificarNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="modificarNombre" name="nombre" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modificarApellido" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="modificarApellido" name="apellido" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modificarTelefono" class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control" id="modificarTelefono" name="telefono" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Modal para el registro de clientes -->
                 <div class="modal fade" id="modalRegistrarCliente" tabindex="-1" aria-labelledby="modalRegistrarClienteLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -137,10 +153,11 @@ $conn->close();
 
                 <!-- Modal para mensaje de éxito -->
                 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-body text-center">
-                                Cliente registrado correctamente.
+                                <i id="successModalIcon" class="fas fa-3x mb-3"></i>
+                                <h5 class="modal-title" id="successModalLabel"></h5>
                             </div>
                         </div>
                     </div>
@@ -149,39 +166,8 @@ $conn->close();
 
 
 
-                <!-- Modal para modificar cliente -->
-                <div class="modal fade" id="modalModificarCliente" tabindex="-1" aria-labelledby="modalModificarClienteLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalModificarClienteLabel">Modificar Cliente</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="formModificarCliente" action="db\modificar_cliente.php" method="POST">
-                                    <div class="mb-3">
-                                        <label for="modificarDni" class="form-label">DNI</label>
-                                        <input type="text" class="form-control" id="modificarDni" name="dni" maxlength="8" required>
-                                        <div id="dni-error" class="text-danger"></div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="modificarNombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="modificarNombre" name="nombre" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="modificarApellido" class="form-label">Apellido</label>
-                                        <input type="text" class="form-control" id="modificarApellido" name="apellido" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="modificarTelefono" class="form-label">Teléfono</label>
-                                        <input type="text" class="form-control" id="modificarTelefono" name="telefono" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
             </div>
         </div>
     </div>

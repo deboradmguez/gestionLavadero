@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/db.php';
 
-
 if (isset($_GET['dni'])) {
     $dni = $_GET['dni'];
 
@@ -17,6 +16,18 @@ if (isset($_GET['dni'])) {
     }
 
     $stmt->close();
+} else {
+    $stmt = $conn->prepare("SELECT dni, nombre, apellido, telefono FROM clientes");
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $clientes = [];
+    while ($row = $result->fetch_assoc()) {
+        $clientes[] = $row;
+    }
+
+    $stmt->close();
+    echo json_encode($clientes);
 }
 
 $conn->close();

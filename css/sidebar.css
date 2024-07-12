@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+:root {
+    --timberwolf: #dad7cdff;
+    --sage: #a3b18aff;
+    --fern-green: #588157ff;
+    --hunter-green: #3a5a40ff;
+    --brunswick-green: #344e41ff;
+
+}
 
 *,
 ::after,
@@ -52,7 +60,6 @@ li {
     margin-top: 56px; /* Ajusta esto según la altura de tu navbar */
     margin-left: 70px; /* Ancho inicial del sidebar */
     overflow: auto;
-    background-color: #fafbfe;
     transition: margin-left 0.25s ease; /* Transición para el margen izquierdo */
 }
 
@@ -64,7 +71,8 @@ li {
     width: 70px;
     z-index: 1000;
     transition: width 0.35s ease-in-out; /* Transición para el cambio de ancho */
-    background-color: #144e45;
+    background-color: #339989;
+    color: #fffafb;
     display: flex;
     flex-direction: column;
 }
@@ -82,13 +90,14 @@ li {
     background-color: transparent;
     cursor: pointer;
     border: 0;
-    padding: 1rem 1.5em;
+    padding: 1rem 1.5rem;
+    font-size: 2rem;
+    color: #fffafb;
+}
+#toggle-btn:hover{
+    color: #06251a;
 }
 
-#toggle-btn i {
-    font-size: 1.5rem;
-    color: #FFF;
-}
 
 .sidebar-logo a {
     color: #FFF;
@@ -108,9 +117,10 @@ li {
 
 a.sidebar-link {
     padding: .625rem 1.625rem;
-    color: #FFF;
+    color: #fffafb; 
+
     display: block;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     white-space: nowrap;
     border-left: 3px solid transparent;
 }
@@ -121,7 +131,7 @@ a.sidebar-link {
 }
 
 a.sidebar-link:hover {
-    background-color: rgba(255, 255, 255, .075);
+    background-color: #3e9e9e;
     border-left: 3px solid #06251a;
 }
 
@@ -133,7 +143,6 @@ a.sidebar-link:hover {
     position: absolute;
     top: 0;
     left: 70px;
-    background-color: #0e2238;
     padding: 0;
     min-width: 15rem;
     display: none;
@@ -147,7 +156,6 @@ a.sidebar-link:hover {
 }
 
 #sidebar-container.expand .sidebar-link .main {
-    background-color: #fafbfe;
     min-height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -183,7 +191,7 @@ a.sidebar-link:hover {
 .navbar-logo {
     display: inline-block;
     vertical-align: middle;
-    width: 70px;
+    width: 60px;
 }
 
 .navbar-logo img {
@@ -194,7 +202,7 @@ a.sidebar-link:hover {
 
 .main-content {
     padding: 20px; 
-    overflow-y: auto;/* Adjust padding as necessary */
+    overflow-y: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -204,7 +212,7 @@ a.sidebar-link:hover {
 }
 
 #btn-salir {
-    color: rgb(255, 255, 255);
+    color: #fffafb;
 }
 
 .sb-nav-fixed .sb-topnav {
@@ -228,7 +236,8 @@ a.sidebar-link:hover {
 }
 
 .sb-topnav {
-    background-color: #286e6e !important;
+    background-color: #339989; 
+    color: #FFFFFF; 
 }
 
 .sb-sidenav {
@@ -280,3 +289,5 @@ a.sidebar-link:hover {
     margin-left: 1.5rem;
     flex-direction: column;
 }
+
+

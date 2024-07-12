@@ -1,6 +1,7 @@
 /*CLIENTES*/
 .clientes-lista {
     overflow-y: auto;
+    background-color: aquamarine;
 }
 
 .cliente-detalle {
@@ -11,3 +12,4 @@
 .clientes-lista li:hover {
     cursor: pointer;
 }
+

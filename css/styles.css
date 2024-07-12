@@ -1,13 +1,13 @@
 #contenedorLogin button {
-  background-color: #223f3f;
+  background-color: #1e5850;
   color: white;
   font-weight: bold;
 }
 #contenedorLogin button:hover {
-background-color: #294141d8;
+background-color: #339989;
 }
 
 
 #pagLogin{
-  background-color: #2e4d4dbe;
+  background-color: #30b39f3a;
 }
