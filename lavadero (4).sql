@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 00:51:51
+-- Tiempo de generación: 10-07-2024 a las 19:21:25
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -40,8 +40,18 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`idcliennte`, `dni`, `nombre`, `apellido`, `telefono`) VALUES
-(1, 43711406, 'debo', 'dominguez', '03704034207'),
-(2, 34564783, 'cami', 'zabala', '01159674508');
+(1, 43711406, 'Débora Abigail ', 'Dominguez', '3704034207'),
+(7, 34564783, 'isabel', 'Domínguez', '01159674508'),
+(9, 23434533, 'cami', 'loca', '34454545'),
+(14, 45325673, 'billie', 'eilish', '5565634435'),
+(15, 43711408, 'cami', 'Domínguez', '01159674508'),
+(16, 43711467, 'marcel', 'Domínguez', '01159674508'),
+(17, 34564654, 'debo', 'Debora Domínguez', '01159674508'),
+(18, 57847584, 'marcel', 'Debora Domínguez', '01159674508'),
+(19, 43711445, 'debo', 'Debora Domínguez', '01159674508'),
+(20, 34564732, 'debo', 'Debora Domínguez', '01159674508'),
+(21, 43711423, 'eretr', 'Debora Domínguez', '01159674508'),
+(22, 57847593, 'fra', 'Debora Domínguez', '01159674508');
 
 -- --------------------------------------------------------
 
@@ -66,10 +76,17 @@ CREATE TABLE `empleados` (
 
 CREATE TABLE `servicios` (
   `idservicio` int(11) NOT NULL,
-  `servicio` text NOT NULL,
+  `servicio` varchar(100) NOT NULL,
   `precio` int(11) NOT NULL,
-  `tiempo` time NOT NULL
+  `tiempo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `servicios`
+--
+
+INSERT INTO `servicios` (`idservicio`, `servicio`, `precio`, `tiempo`) VALUES
+(1, 'lavado', 11, 23);
 
 -- --------------------------------------------------------
 
@@ -93,8 +110,15 @@ CREATE TABLE `turnos` (
 CREATE TABLE `usuarios` (
   `idusuario` int(11) NOT NULL,
   `nombreusuario` varchar(6) NOT NULL,
-  `contraseña` varchar(30) NOT NULL
+  `contraseña` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`idusuario`, `nombreusuario`, `contraseña`) VALUES
+(3, 'admin', '6e1f3a0cf687d43cef2d7f37543d0e6d');
 
 -- --------------------------------------------------------
 
@@ -105,6 +129,7 @@ CREATE TABLE `usuarios` (
 CREATE TABLE `vehiculos` (
   `patente` varchar(7) NOT NULL,
   `modelo` text NOT NULL,
+  `tipo` varchar(12) NOT NULL,
   `idcliente` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -165,13 +190,13 @@ ALTER TABLE `vehiculos`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `idcliennte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idcliennte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `idservicio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idservicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `turnos`
@@ -183,7 +208,7 @@ ALTER TABLE `turnos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
