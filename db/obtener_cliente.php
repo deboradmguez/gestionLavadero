@@ -17,17 +17,36 @@ if (isset($_GET['dni'])) {
 
     $stmt->close();
 } else {
-    $stmt = $conn->prepare("SELECT dni, nombre, apellido, telefono FROM clientes");
+    $clientes = [];
+    $stmt = $conn->prepare("SELECT idcliennte, dni, nombre, apellido FROM clientes");
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $clientes = [];
     while ($row = $result->fetch_assoc()) {
-        $clientes[] = $row;
+        $cliente = [
+            'idcliennte' => $row['idcliennte'],
+            'nombre' => $row['nombre'],
+            'apellido' => $row['apellido'],
+            'dni' => $row['dni'],
+            'vehiculos' => []
+        ];
+
+        // Obtener los vehículos del cliente
+        $stmtVehiculos = $conn->prepare('SELECT patente, modelo, tipo FROM vehiculos WHERE idcliente = ?');
+        $stmtVehiculos->bind_param("i", $row['idcliennte']);
+        $stmtVehiculos->execute();
+        $resultVehiculos = $stmtVehiculos->get_result();
+
+        while ($vehiculo = $resultVehiculos->fetch_assoc()) {
+            $cliente['vehiculos'][] = $vehiculo;
+        }
+
+        $clientes[] = $cliente;
+        $stmtVehiculos->close();
     }
 
-    $stmt->close();
     echo json_encode($clientes);
+    $stmt->close();
 }
 
 $conn->close();

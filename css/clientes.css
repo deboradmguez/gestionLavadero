@@ -12,4 +12,27 @@
 .clientes-lista li:hover {
     cursor: pointer;
 }
+#titulosHead th{
+    background-color: aquamarine;
+}
 
+/* Estilos para los botones de acción */
+form .btn {
+    margin: 0 3px;  /* Reducir el margen entre los botones */
+    padding: 0.25rem 0.5rem;  /* Ajustar el padding para hacerlos más pequeños */
+    font-size: 0.875rem;  /* Ajustar el tamaño de la fuente */
+}
+
+form .d-flex .col-2 {
+    display: flex;
+    align-items: center;
+}
+
+.table thead th {
+    text-align: center;
+}
+
+.table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}

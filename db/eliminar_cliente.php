@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/db.php';
 
+header('Content-Type: application/json');
+
+$response = ['success' => false];
 
 if (isset($_GET['dni'])) {
     $dni = $_GET['dni'];
@@ -9,12 +12,16 @@ if (isset($_GET['dni'])) {
     $stmt->bind_param("s", $dni);
 
     if ($stmt->execute()) {
-        echo "<script>window.location.href = '../clientes.php';</script>";
+        $response['success'] = true;
     } else {
-        echo "Error: " . $stmt->error;
+        $response['error'] = "Error: " . $stmt->error;
     }
 
     $stmt->close();
+} else {
+    $response['error'] = "No DNI provided.";
 }
 
 $conn->close();
+
+echo json_encode($response);

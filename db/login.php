@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar la contraseña
         $contraseña_hasheada_md5 = $user['contraseña']; // Obtener la contraseña hasheada de la base de datos
-        echo "Contraseña hasheada en la base de datos: " . $contraseña_hasheada_md5 . "<br>"; // Depuración
 
         // Hashear la contraseña ingresada con MD5 para compararla con la contraseña hasheada en la base de datos
         $contraseña_ingresada_md5 = md5($contraseña);
