@@ -1,35 +1,33 @@
-// Función para cargar los componentes HTML
-function loadComponent(url, elementId, callback) {
-    fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById(elementId).innerHTML = data;
-            if (callback) callback(); 
-        })
-        .catch(error => console.error('Error loading component:', error));
-}
-
+// Función para configurar los event listeners
 function setupEventListeners() {
-    const toggler = document.querySelector("#toggle-btn");
-    if (toggler) {
-        toggler.addEventListener("click", function () {
-            document.querySelector("#sidebar-container").classList.toggle("expand");
-            document.querySelector(".main").classList.toggle("expand");
-        });
+    const toggleBtn = document.querySelector("#toggle-btn");
+    const sidebar = document.querySelector("#sidebar");
+    const main = document.querySelector(".main");
+
+    // Toggler para expandir/contraer el sidebar
+    toggleBtn?.addEventListener("click", () => {
+        sidebar?.classList.toggle("expand");
+        main?.classList.toggle("expanded");
+
+        // Guardar el estado del sidebar en localStorage
+        localStorage.setItem('sidebar-expanded', sidebar?.classList.contains("expand"));
+    });
+
+    // Aplicar el estado guardado del sidebar al cargar la página
+    const sidebarExpanded = localStorage.getItem('sidebar-expanded') === 'true';
+    if (sidebarExpanded) {
+        sidebar?.classList.add("expand");
+        main?.classList.add("expanded");
     }
 
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', (event) => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        });
-    }
+    // Toggler para el sidebar en dispositivos móviles (si es necesario)
+    const sidebarToggle = document.querySelector('#sidebarToggle');
+    sidebarToggle?.addEventListener('click', (event) => {
+        event.preventDefault();
+        document.body.classList.toggle('sb-sidenav-toggled');
+        localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+    });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadComponent('navbar.html', 'navbar-container', () => {
-        loadComponent('sidebar.html', 'sidebar-container', setupEventListeners);
-    });
-});
+// Llamar a la función cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', setupEventListeners);

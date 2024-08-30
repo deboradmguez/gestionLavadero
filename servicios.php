@@ -35,9 +35,9 @@ $result = $conn->query($sql);
         </div>
         <div class="main">
             <div id="main-content">
-                <h1 class="ms-4">Servicios</h1>
+                <h1 class="ms-4 mt-4">Servicios</h1>
                 
-                <div class="d-flex flex-wrap align-items-center ms-4 me-4">
+                <div class="d-flex flex-wrap align-items-center ms-4 me-4 mt-3">
                                 <div class="col-lg-6 col-md-6 flex-grow-1">
                                     <input type="text" class="form-control" name="busqueda" id="busqueda" placeholder="Buscar servicio">
                                 </div>
@@ -109,7 +109,7 @@ $result = $conn->query($sql);
                 </div>
 
                 <!-- Cards de servicios -->
-                <div class="row row-cols-1 row-cols-md-3 g-4 mt-3 ms-4 me-4">
+                <div class="row row-cols-1 row-cols-md-3 g-4 mt-3 ms-4 me-4" id="servicios-container">
                     <?php
                     // Verifica si la variable $conn está definida y es un objeto
                     if (isset($conn) && $conn instanceof mysqli) {
@@ -118,13 +118,13 @@ $result = $conn->query($sql);
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo '<div class="col">
+                                echo '<div class="col servicio-item">
                                         <div class="card h-100">
                                             <div class="card-body">
                                                 <h5 class="card-title">' . $row["servicio"] . '</h5>
                                                 <p class="card-text">Precio: $' . $row["precio"] . '</p>
                                                 <p class="card-text">Tiempo: ' . $row["tiempo"] . ' minutos</p>
-                                                <div class="d-flex justify-content-between">
+                                                <div class="d-flex justify-content-start gap-2">
                                                     <button class="btn btn-warning btn-sm" onclick="editService(' . $row["idservicio"] . ', \'' . $row["servicio"] . '\', ' . $row["precio"] . ', ' . $row["tiempo"] . ')">Editar</button>
                                                     <a href="db\services\eliminarservicio.php?id=' . $row["idservicio"] . '" class="btn btn-danger btn-sm">Eliminar</a>
                                                 </div>
@@ -163,6 +163,21 @@ $result = $conn->query($sql);
             var editModal = new bootstrap.Modal(document.getElementById('editServiceModal'), {});
             editModal.show();
         }
+
+        // Función de búsqueda
+        document.getElementById('busqueda').addEventListener('input', function() {
+            let busqueda = this.value.toLowerCase();
+            let servicios = document.getElementsByClassName('servicio-item');
+            
+            for (let servicio of servicios) {
+                let titulo = servicio.querySelector('.card-title').textContent.toLowerCase();
+                if (titulo.includes(busqueda)) {
+                    servicio.style.display = '';
+                } else {
+                    servicio.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>

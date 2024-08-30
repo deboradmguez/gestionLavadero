@@ -11,3 +11,36 @@ background-color: #339989;
 #pagLogin{
   background-color: #30b39f3a;
 }
+
+#sidebar {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    transition: width 0.35s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1030;
+}
+
+#sidebar.expand {
+    width: var(--sidebar-expanded-width);
+}
+
+/* Asegúrate de que esta regla esté presente para ajustar el contenido principal */
+.main {
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.35s ease-in-out;
+}
+
+#sidebar.expand ~ .main {
+    margin-left: var(--sidebar-expanded-width);
+}
+
+.main.expanded {
+    margin-left: var(--sidebar-expanded-width);
+}

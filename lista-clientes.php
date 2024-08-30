@@ -12,8 +12,11 @@
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/clientes.css">
-
-
+    <style>
+        #tablaClientes td:first-child {
+            text-align: left;
+        }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -58,7 +61,7 @@
                         <table class="table table-striped" id="tablaClientes">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
+                                    <th scope="col" class="text-start">Nombre</th>
                                     <th scope="col">Vehículo(s)</th>
                                     <th scope="col">Acciones</th>
                                 </tr>
