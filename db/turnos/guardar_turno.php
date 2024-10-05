@@ -1,32 +1,45 @@
 <?php
 include ("..\db.php");
-$datos = json_decode(file_get_contents('php://input'), true);
 
-// Validar que todos los campos necesarios estén presentes
-if (!isset($datos['idservicio']) || !isset($datos['idvehiculo']) || !isset($datos['idcliente']) || !isset($datos['fecha']) || !isset($datos['hora'])) {
-    echo json_encode(['success' => false, 'message' => 'Faltan datos requeridos']);
-    exit;
+// Capturar los datos enviados desde el formulario
+$clienteSeleccionado = $_POST['clienteSeleccionado'];
+$vehiculo = $_POST['vehiculo'];
+$servicio = $_POST['servicio'];
+
+// Obtener la duración del servicio seleccionado
+$queryServicio = $conn->query("SELECT tiempo FROM servicios WHERE idservicio = $servicio");
+$servicioData = $queryServicio->fetch_assoc();
+$duracionServicio = (int)$servicioData['tiempo']; // Tiempo en minutos
+
+// Obtener la fecha actual
+$fecha = date('Y-m-d');
+
+// Calcular el tiempo total de los turnos del día y el último turno asignado
+$result = $conn->query("SELECT hora, s.tiempo FROM turnos t JOIN servicios s ON t.servicio_id = s.idservicio WHERE t.fecha = '$fecha' ORDER BY t.hora DESC");
+$tiempoTotal = 0;
+$ultimaHoraFin = '08:00'; // Hora de inicio del primer turno del día
+
+while ($row = $result->fetch_assoc()) {
+    $tiempoTotal += $row['tiempo'];
+    $ultimaHoraFin = date('H:i', strtotime($row['hora'] . ' + ' . $row['tiempo'] . ' minutes'));
 }
 
-try {
-    // Preparar la consulta SQL
-    $stmt = $conn->prepare("INSERT INTO turnos (idservicio, idvehiculo, idcliente, fecha, hora, estado) VALUES (?, ?, ?, ?, ?, ?)");
+// Definir el límite máximo de 8 horas (480 minutos)
+$LIMITE_HORAS = 480;
 
-    // Establecer el estado inicial (puedes ajustarlo según tus necesidades)
-    $estado = 'pendiente';
+if ($tiempoTotal + $duracionServicio > $LIMITE_HORAS) {
+    echo 'No hay tiempo suficiente para asignar este servicio hoy.';
+} else {
+    // Asignar el nuevo turno después del último
+    $horaInicioNuevoTurno = $ultimaHoraFin;
 
-    // Ejecutar la consulta con los datos recibidos
-    $stmt->bind_param("iiisss", $datos['idservicio'], $datos['idvehiculo'], $datos['idcliente'], $datos['fecha'], $datos['hora'], $estado);
-    $stmt->execute();
-
-    // Verificar si se insertó correctamente
-    if ($stmt->affected_rows > 0) {
-        echo json_encode(['success' => true, 'message' => 'Turno guardado exitosamente']);
+    // Insertar el turno en la base de datos
+    $sql = "INSERT INTO turnos (cliente_id, vehiculo, servicio_id, fecha, hora) VALUES ('$clienteSeleccionado', '$vehiculo', '$servicio', '$fecha', '$horaInicioNuevoTurno')";
+    if ($conn->query($sql) === TRUE) {
+        echo "Turno guardado exitosamente a las $horaInicioNuevoTurno.";
     } else {
-        echo json_encode(['success' => false, 'message' => 'No se pudo guardar el turno']);
+        echo 'Error al guardar el turno: ' . $conn->error;
     }
-
-    $stmt->close();
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'Error al guardar el turno: ' . $e->getMessage()]);
 }
+
+$conn->close();

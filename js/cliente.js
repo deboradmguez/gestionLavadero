@@ -166,3 +166,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar
     cargarYMostrarClientes();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const clienteForm = document.getElementById('clienteForm');
+    
+    clienteForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(clienteForm);
+        
+        fetch('../db/guardar_cliente.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mostrar mensaje de éxito
+                mostrarMensajeExito('Cliente guardado exitosamente');
+                // Cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalRegistrarCliente'));
+                modal.hide();
+                // Recargar la lista de clientes
+                cargarClientes();
+            } else {
+                // Mostrar mensaje de error
+                mostrarMensajeError('Error al guardar el cliente: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensajeError('Error al procesar la solicitud');
+        });
+    });
+});
+
+

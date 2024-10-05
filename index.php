@@ -173,23 +173,36 @@ if (!isset($_SESSION['idusuario'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAgregarTurno">
-                        <div class="mb-3">
-                            <label for="clienteBusqueda" class="form-label">Buscar Cliente (DNI o Nombre)</label>
-                            <input type="text" class="form-control" id="clienteBusqueda" name="clienteBusqueda" placeholder="Ingrese DNI o nombre del cliente" autocomplete="off">
                             <input type="hidden" id="clienteSeleccionado" name="clienteSeleccionado">
                         </div>
                         <div id="resultadosBusqueda" class="list-group mt-2" style="display:none;"></div>
+                        <div class="mb-3"><form id="formAgregarTurno">
+                        <div class="mb-3">
+                            <label for="clienteBusqueda" class="form-label">Buscar Cliente (DNI o Nombre)</label>
+                            <input type="text" class="form-control" id="clienteBusqueda" name="clienteBusqueda" placeholder="Ingrese DNI o nombre del cliente" autocomplete="off">
+                        </div>
                         <div class="mb-3">
                             <label for="vehiculo" class="form-label">Vehículo</label>
                             <select class="form-select" id="vehiculo" name="vehiculo" required>
-                                <option value="">Seleccione un cliente primero</option>
+                                <option value="">Seleccione un vehículo</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="servicio" class="form-label">Servicio</label>
-                            <select class="form-select" id="servicio" name="servicio" required>
-                                <option value="">Seleccione un servicio...</option>
+                            <label for="servicio" class="form-label">Servicios</label>
+                            <select class="form-select" id="servicio" name="servicio[]" multiple required>
+                                <?php
+                                // Cargar servicios desde la base de datos
+                                $sqlServicios = "SELECT idservicio, servicio FROM servicios";
+                                $resultServicios = $conn->query($sqlServicios);
+
+                                if ($resultServicios->num_rows > 0) {
+                                    while ($rowServicio = $resultServicios->fetch_assoc()) {
+                                        echo "<option value='" . $rowServicio['idservicio'] . "'>" . $rowServicio['servicio'] . "</option>";
+                                    }
+                                } else {
+                                    echo "<option value=''>No hay servicios disponibles</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -205,7 +218,6 @@ if (!isset($_SESSION['idusuario'])) {
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="js/load-content.js"></script>

@@ -4,6 +4,7 @@ require_once __DIR__ . '/db.php';
 if (isset($_GET['q'])) {
     $busqueda = '%' . $_GET['q'] . '%';
 
+    // Preparar la consulta para buscar clientes
     $stmt = $conn->prepare("SELECT idcliennte, dni, nombre, apellido FROM clientes WHERE nombre LIKE ? OR apellido LIKE ? OR dni LIKE ? LIMIT 10");
     $stmt->bind_param("sss", $busqueda, $busqueda, $busqueda);
     $stmt->execute();
@@ -36,7 +37,7 @@ if (isset($_GET['q'])) {
     echo json_encode($clientes);
     $stmt->close();
 } else {
-    echo json_encode([]);
+    echo json_encode([]); // Retornar un array vacío si no hay búsqueda
 }
 
 $conn->close();
