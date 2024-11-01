@@ -74,96 +74,173 @@ if (!isset($_SESSION['idusuario'])) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-8">
-                        <div class="card mb-4">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <div>
-                                    <i class="fas fa-calendar-alt me-1"></i>
-                                    Turnos del Día
-                                </div>
-                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#agregarTurnoModal">
-                                    <i class="fas fa-plus"></i> Agregar Turno
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Hora</th>
-                                            <th>Cliente</th>
-                                            <th>Vehículo</th>
-                                            <th>Servicio</th>
-                                            <th>Estado</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        // Incluir el archivo de conexión a la base de datos
-                                        require_once 'C:\Users\debod\OneDrive\Desktop\gestionLavadero\db\db.php';
-
-                                        $sql = "SELECT t.hora, 
-                                                    CONCAT(c.nombre, ' ', c.apellido) AS cliente, 
-                                                    CONCAT(v.tipo, ' ', v.modelo, ' (', v.patente, ')') AS vehiculo, 
-                                                    s.servicio AS servicio,
-                                                    t.estado 
-                                                FROM turnos t 
-                                                JOIN clientes c ON t.idcliente = c.idcliennte 
-                                                JOIN vehiculos v ON t.idvehiculo = v.patente 
-                                                JOIN servicios s ON t.idservicio = s.idservicio
-                                                WHERE t.fecha = CURDATE() 
-                                                ORDER BY t.hora";
-
-                                        $result = $conn->query($sql);
-
-                                        if ($result->num_rows > 0) {
-                                            while ($row = $result->fetch_assoc()) {
-                                                $estadoClass = '';
-                                                switch ($row["estado"]) {
-                                                    case 'Pendiente':
-                                                        $estadoClass = 'warning';
-                                                        break;
-                                                    case 'En Proceso':
-                                                        $estadoClass = 'info';
-                                                        break;
-                                                    case 'Completado':
-                                                        $estadoClass = 'success';
-                                                        break;
-                                                    case 'Cancelado':
-                                                        $estadoClass = 'danger';
-                                                        break;
-                                                }
-                                                echo "<tr>
-                                                        <td>" . $row["hora"] . "</td>
-                                                        <td>" . $row["cliente"] . "</td>
-                                                        <td>" . $row["vehiculo"] . "</td>
-                                                        <td>" . $row["servicio"] . "</td>
-                                                        <td><span class='badge bg-{$estadoClass}'>" . $row["estado"] . "</span></td>
-                                                    </tr>";
-                                            }
-                                        } else {
-                                            echo "<tr><td colspan='5'>No hay turnos para hoy</td></tr>";
-                                        }
-
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-pie me-1"></i>
-                                Servicios Más Solicitados
-                            </div>
-                            <div class="card-body"><canvas id="serviciosChart" width="100%" height="50"></canvas></div>
-                        </div>
-                    </div>
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    Turnos del Día
                 </div>
+                
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Servicio</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Incluir el archivo de conexión a la base de datos
+                        require_once 'db/db.php';
+
+                        // Consulta para obtener los turnos de hoy
+                        $sql = "SELECT t.hora, 
+                                    CONCAT(c.nombre, ' ', c.apellido) AS cliente, 
+                                    CONCAT(v.tipo, ' ', v.modelo, ' (', v.patente, ')') AS vehiculo, 
+                                    s.servicio AS servicio,
+                                    t.estado 
+                                FROM turnos t 
+                                JOIN clientes c ON t.idcliente = c.idcliennte 
+                                JOIN vehiculos v ON t.idvehiculo = v.patente 
+                                JOIN servicios s ON t.idservicio = s.idservicio
+                                WHERE t.fecha = CURDATE() 
+                                ORDER BY t.hora";
+
+                        $result = $conn->query($sql);
+
+                        // Convertir los turnos a un array con la hora como clave para fácil acceso
+                        $turnos = [];
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                $turnos[$row['hora']] = $row;
+                            }
+                        }
+
+                        // Crear un bucle para mostrar todas las horas
+                        $horas = array_merge(range(8, 11), range(16, 19)); // Horario de 8-12 y de 16-20
+
+                        foreach ($horas as $hora) {
+                            $hora_str = sprintf("%02d:00", $hora); // Formato de hora "08:00", "09:00", etc.
+
+                            if (isset($turnos[$hora_str])) {
+                                // Si hay un turno a esta hora
+                                $row = $turnos[$hora_str];
+                                $estadoClass = '';
+                                switch ($row["estado"]) {
+                                    case 'Pendiente':
+                                        $estadoClass = 'warning';
+                                        break;
+                                    case 'En Proceso':
+                                        $estadoClass = 'info';
+                                        break;
+                                    case 'Completado':
+                                        $estadoClass = 'success';
+                                        break;
+                                    case 'Cancelado':
+                                        $estadoClass = 'danger';
+                                        break;
+                                }
+                                echo "<tr>
+                                        <td>{$hora_str}</td>
+                                        <td>{$row["cliente"]}</td>
+                                        <td>{$row["vehiculo"]}</td>
+                                        <td>{$row["servicio"]}</td>
+                                        <td><span class='badge bg-{$estadoClass}'>{$row["estado"]}</span></td>
+                                        <td><button class='btn btn-primary btn-sm' >Asignar Turno</button></td>
+                                    </tr>";
+                            } else {
+                                // Si no hay turno a esta hora
+                                echo "<tr>
+                                        <td>{$hora_str}</td>
+                                        <td colspan='4'>Hora disponible</td>
+                                        <td><button class='btn btn-primary btn-sm' data-bs-toggle='modal' data-bs-target='#agregarTurnoModal' >Asignar Turno</button></td>
+                                    </tr>";
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
+
+
+    
+    <div class="modal fade" id="modalRegistrarCliente" tabindex="-1" aria-labelledby="modalRegistrarClienteLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalRegistrarClienteLabel">Registrar Cliente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="clienteForm" action="javascript:void(0);" method="POST">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Datos del Cliente</h5>
+                                                <div class="mb-3">
+                                                    <label for="dni" class="form-label">DNI</label>
+                                                    <input type="text" class="form-control" id="dni" name="dni" maxlength="8" pattern="\d{8}" required>
+                                                    <div id="dni-error" class="text-danger"></div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="nombre" class="form-label">Nombre</label>
+                                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="apellido" class="form-label">Apellido</label>
+                                                    <input type="text" class="form-control" id="apellido" name="apellido" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="telefono" class="form-label">Teléfono</label>
+                                                    <input type="text" class="form-control" id="telefono" name="telefono" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <h5>Datos del Vehículo</h5>
+                                                <div class="mb-3">
+                                                    <label for="patente" class="form-label">Patente</label>
+                                                    <input type="text" class="form-control" id="patente" name="patente" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="modelo" class="form-label">Modelo</label>
+                                                    <input type="text" class="form-control" id="modelo" name="modelo" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="tipo" class="form-label">Tipo de Vehículo</label>
+                                                    <select class="form-select" id="tipo" name="tipo" required>
+                                                        <option value="">Seleccionar tipo</option>
+                                                        <option value="Camioneta">Camioneta</option>
+                                                        <option value="Auto">Auto</option>
+                                                        <option value="Moto">Moto</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
     <!-- Modal para Agregar Turno -->
     <div class="modal fade" id="agregarTurnoModal" tabindex="-1" aria-labelledby="agregarTurnoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -173,56 +250,49 @@ if (!isset($_SESSION['idusuario'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                            <input type="hidden" id="clienteSeleccionado" name="clienteSeleccionado">
-                        </div>
-                        <div id="resultadosBusqueda" class="list-group mt-2" style="display:none;"></div>
-                        <div class="mb-3"><form id="formAgregarTurno">
+                <div class="ms-1">
+                                    
+                                </div>
+                    <form id="formAgregarTurno">
                         <div class="mb-3">
                             <label for="clienteBusqueda" class="form-label">Buscar Cliente (DNI o Nombre)</label>
                             <input type="text" class="form-control" id="clienteBusqueda" name="clienteBusqueda" placeholder="Ingrese DNI o nombre del cliente" autocomplete="off">
+                            <input type="hidden" id="clienteSeleccionado" name="clienteSeleccionado">
                         </div>
+                        <div id="resultadosBusqueda" class="list-group mt-2" style="display:none;"></div>
                         <div class="mb-3">
                             <label for="vehiculo" class="form-label">Vehículo</label>
                             <select class="form-select" id="vehiculo" name="vehiculo" required>
-                                <option value="">Seleccione un vehículo</option>
+                                <option value="">Seleccione un cliente primero</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="servicio" class="form-label">Servicios</label>
-                            <select class="form-select" id="servicio" name="servicio[]" multiple required>
-                                <?php
-                                // Cargar servicios desde la base de datos
-                                $sqlServicios = "SELECT idservicio, servicio FROM servicios";
-                                $resultServicios = $conn->query($sqlServicios);
-
-                                if ($resultServicios->num_rows > 0) {
-                                    while ($rowServicio = $resultServicios->fetch_assoc()) {
-                                        echo "<option value='" . $rowServicio['idservicio'] . "'>" . $rowServicio['servicio'] . "</option>";
-                                    }
-                                } else {
-                                    echo "<option value=''>No hay servicios disponibles</option>";
-                                }
-                                ?>
+                            <label for="servicio" class="form-label">Servicio</label>
+                            <select class="form-select" id="servicio" name="servicio" required>
+                                <option value="">Seleccione un servicio...</option>
                             </select>
                         </div>
-                        <div class="mb-3">
-                            <label for="horaTurno" class="form-label">Hora del Turno</label>
-                            <input type="time" class="form-control" id="horaTurno" name="horaTurno" required>
-                        </div>
+                        
                     </form>
                 </div>
                 <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalRegistrarCliente">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                    Agregar nuevo cliente
+                                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" id="btnGuardarTurno">Guardar Turno</button>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="js/load-content.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="js/turnos.js"></script>
+    <script src="js/cliente.js"></script>
 </body>
 
 </html>

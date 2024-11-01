@@ -36,8 +36,6 @@ $result = $conn->query($sql);
         <div class="main">
             <div id="main-content">
                 <h1 class="ms-4 mt-4">Estadísticas</h1>
-                
-                
                 <div class="container">
                 <div class="row">
                 <!-- Gráfico de clientes -->
@@ -50,7 +48,6 @@ $result = $conn->query($sql);
                     </select>
                     <canvas id="clientsChart" width="400" height="250"></canvas>
                 </div>
-
                 <!-- Gráfico de ingresos -->
                 <div class="col-md-6">
                     <h3>Ingresos</h3>
