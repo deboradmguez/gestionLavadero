@@ -14,4 +14,3 @@ $horarios = [
     ]
 ];
 echo json_encode($horarios);
-?>

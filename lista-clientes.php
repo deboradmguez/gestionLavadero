@@ -44,11 +44,7 @@
                                     </button>
                                 </div>
                                 <div class="ms-1 mt-1 me-2">
-                                    <!--<button type="button" class="btn btn-primary btn-sm me-1 mb-1"><i class="fas fa-eye"></i></button>
-                                    <button type="button" class="btn btn-secondary btn-sm me-1 mb-1"><i class="fas fa-edit"></i></button>
-                                    <button type="button" class="btn btn-warning btn-sm me-1 mb-1"><i class="fas fa-exclamation-circle"></i></button>-->
                                     <button type="button" class="btn btn-primary btn-sm me-1 mb-1 btn-recargar " id="btn-recargar"><i class="fas fa-sync"></i>Recargar</button>
-                                    <button type="button" class="btn btn-danger btn-sm mb-1"><i class="fas fa-trash"></i>Eliminar</button>
                                 </div>
                             </div>
                         </form>
@@ -188,6 +184,8 @@
                                         </div>
                                     </div>
                                 </form>
+                                <div id="errorContainer" class="text-danger" style="display: none;"></div>
+                                <div id="successContainer" class="text-success" style="display: none;"></div>
                             </div>
                         </div>
                     </div>
@@ -212,7 +210,6 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
     <script src="js/load-content.js"></script>
     <script src="js/cliente.js"></script>
 
